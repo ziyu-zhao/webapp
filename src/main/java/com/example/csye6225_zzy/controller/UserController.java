@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,7 +35,8 @@ public class UserController {
     @Autowired
     private HttpServletResponse response;
 
-    private boolean useDefault = true;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     private SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
@@ -70,7 +72,7 @@ public class UserController {
         User user = userMapper.selectByName(username);
         if (user==null) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            return "user not found";
+            return "user not found, get default user:\n"+JSON.toJSONString(getDefaultUser());
         }
 
         if (!map.get("username").equals(user.getUsername())){
@@ -80,7 +82,7 @@ public class UserController {
 
         user.setLastname(map.get("lastname"));
         user.setFirstname(map.get("firstname"));
-        user.setPassword(map.get("password"));
+        user.setPassword(bCryptPasswordEncoder.encode(map.get("password")));
         user.setAccountUpdated(format.format(new Date()));
 
         userMapper.updateUser(user);
