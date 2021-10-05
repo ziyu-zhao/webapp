@@ -41,51 +41,29 @@ public class UserController {
     @ApiOperation("get user information")
     @GetMapping("/v1/user/self")
     public String getUser(){
-        if (useDefault){
-            Map<String,String> dUser = new HashMap<>();
-            dUser.put("ID",UUID.randomUUID().toString());
-            dUser.put("firstname","ziyu");
-            dUser.put("lastname","zhao");
-            dUser.put("username","zhao.ziyu2@northeastern.edu");
-            dUser.put("accountCreated",format.format(new Date()));
-            dUser.put("accountUpdated",format.format(new Date()));
-            return JSON.toJSONString(dUser);
-        }
-
-
         String token = request.getHeader("token");
         if (token==null) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            return "unauthorized";
+            return "unauthorized, get default user:\n"+JSON.toJSONString(getDefaultUser());
         }
 
         String username = JWTUtil.getName(token);
         User user = userMapper.selectByName(username);
         if (user==null) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            return "user not found";
+            return "user not found, get default user:\n"+JSON.toJSONString(getDefaultUser());
         }
 
         return JSON.toJSONString(user);
     }
 
     @ApiOperation("update user information")
-    @PutMapping(path = "/v1/user/self", produces = "application/json")
+    @PutMapping(path = "/v1/user/self", consumes = "application/json")
     public String updateUser(@RequestBody Map<String, String> map){
-        if (useDefault){
-            Map<String,String> dUser = new HashMap<>();
-            dUser.put("ID",UUID.randomUUID().toString());
-            dUser.put("firstname","ziyu");
-            dUser.put("lastname","zhao");
-            dUser.put("username","zhao.ziyu2@northeastern.edu");
-            dUser.put("accountCreated",format.format(new Date()));
-            dUser.put("accountUpdated",format.format(new Date()));
-            return JSON.toJSONString(dUser);
-        }
         String token = request.getHeader("token");
         if (token==null) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            return "unauthorized";
+            return "unauthorized, get default user:\n"+JSON.toJSONString(getDefaultUser());
         }
 
         String username = JWTUtil.getName(token);
@@ -107,6 +85,24 @@ public class UserController {
 
         userMapper.updateUser(user);
 
-        return JSON.toJSONString(user);
+        Map<String,String> RUser = new HashMap<>();
+        RUser.put("ID",user.getID());
+        RUser.put("firstname",user.getFirstname());
+        RUser.put("lastname",user.getLastname());
+        RUser.put("username",user.getUsername());
+        RUser.put("accountCreated",user.getAccountCreated());
+        RUser.put("accountUpdated",user.getAccountUpdated());
+        return JSON.toJSONString(RUser);
+    }
+
+    private Map<String,String> getDefaultUser(){
+        Map<String,String> dUser = new HashMap<>();
+        dUser.put("ID",UUID.randomUUID().toString());
+        dUser.put("firstname","ziyu");
+        dUser.put("lastname","zhao");
+        dUser.put("username","zhao.ziyu2@northeastern.edu");
+        dUser.put("accountCreated",format.format(new Date()));
+        dUser.put("accountUpdated",format.format(new Date()));
+        return dUser;
     }
 }
