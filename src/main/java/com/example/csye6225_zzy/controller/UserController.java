@@ -56,7 +56,14 @@ public class UserController {
             return "user not found, get default user:\n"+JSON.toJSONString(getDefaultUser());
         }
 
-        return JSON.toJSONString(user);
+        Map<String,String> RUser = new HashMap<>();
+        RUser.put("ID",user.getID());
+        RUser.put("firstname",user.getFirstname());
+        RUser.put("lastname",user.getLastname());
+        RUser.put("username",user.getUsername());
+        RUser.put("accountCreated",user.getAccountCreated());
+        RUser.put("accountUpdated",user.getAccountUpdated());
+        return JSON.toJSONString(RUser);
     }
 
     @ApiOperation("update user information")
