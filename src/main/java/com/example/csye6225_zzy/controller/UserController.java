@@ -70,6 +70,7 @@ public class UserController {
     @PutMapping(path = "/v1/user/self", consumes = "application/json")
     public String updateUser(@RequestBody Map<String, String> map){
         String token = request.getHeader("token");
+
         if (token==null) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return "unauthorized, get default user:\n"+JSON.toJSONString(getDefaultUser());
@@ -82,7 +83,7 @@ public class UserController {
             return "user not found, get default user:\n"+JSON.toJSONString(getDefaultUser());
         }
 
-        if (!map.get("username").equals(user.getUsername())){
+        if (!map.get("email").equals(user.getUsername())){
             response.setStatus(HttpStatus.BAD_REQUEST.value());
             return "username cannot be changed";
         }
