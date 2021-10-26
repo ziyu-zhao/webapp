@@ -125,14 +125,14 @@ public class UserController {
 
         if (token==null) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            return "unauthorized, get default user";
+            return "unauthorized";
         }
 
         String username = JWTUtil.getName(token);
         User user = userMapper.selectByName(username);
         if (user==null) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            return "user not found, get default user";
+            return "user not found";
         }
 
         String ID = user.getID();
