@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.csye6225_zzy.mapper.FileMapper">
+
+    <delete id="deleteFile">
+        delete from amazon_file_model where id=#{ID}
+    </delete>
+
+    <select id="searchByID" resultType="amazonFileModel">
+        select * from amazon_file_model where id=#{ID}
+    </select>
+
+    <insert id="addFile" parameterType="amazonFileModel">
+        insert into amazon_file_model (ID, fileName, url, uploadTime)
+        values (#{ID},#{fileName},#{url},#{uploadTime})
+    </insert>
+
+    <update id="updateFile" parameterType="amazonFileModel">
+        update amazon_file_model set fileName=#{fileName},
+                        url=#{url},
+                        uploadTime=#{uploadTime}
+        where id=#{ID}
+    </update>
+
+</mapper>

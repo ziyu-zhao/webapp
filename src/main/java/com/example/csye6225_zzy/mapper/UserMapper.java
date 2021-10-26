@@ -4,7 +4,6 @@ import com.example.csye6225_zzy.pojo.User;
 
 import org.springframework.stereotype.Repository;
 
-
 @Repository
 public interface UserMapper {
 
