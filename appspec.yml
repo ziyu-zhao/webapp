@@ -1,12 +1,10 @@
 version: 0.0
 os: linux
-
 files:
-  - source: ./web.jar
+  - source: web.jar
     destination: /usr/local
-
 hooks:
   ApplicationStart:
-    - location: ./codedeploy/start.sh
+    - location: codedeploy/start.sh
       timeout: 180
       runas: ubuntu
