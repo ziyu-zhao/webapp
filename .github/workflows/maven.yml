@@ -1,5 +1,10 @@
 name: java package
 
+env:
+  NAME: csye6225-webapp-zzy.zip
+  AWS_REGION: us-east-1
+  S3_BUCKET: codedeploy.zzyweb
+
 on:
   push:
 
@@ -16,3 +21,21 @@ jobs:
           distribution: 'adopt'
       - name: Build with Maven
         run: mvn -B package --file pom.xml
+
+      - name: package
+        run: |
+          zip -r ${{ env.NAME }} /home/runner/work/webapp/webapp/target/CSYE6225_zzy-0.0.1-SNAPSHOT.jar codedeploy/*.sh appspec.yml
+          mkdir target
+          mv ${{ env.NAME }} target/
+          ls -al
+
+      - name: config AWS confidential
+        uses: aws-actions/configure-aws-confidentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: copy artifact to s3
+        run: |
+          aws s3 sync ./target s3://${{ env.S3_BUCKET }}
