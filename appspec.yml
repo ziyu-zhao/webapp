@@ -6,7 +6,7 @@ files:
     destination: /usr/local
 
 hooks:
-  AfterInstall:
-    - location: ./start.sh
+  ApplicationStart:
+    - location: ./codedeploy/start.sh
       timeout: 180
       runas: ubuntu
