@@ -29,8 +29,8 @@ jobs:
           mv ${{ env.NAME }} target/
           ls -al
 
-      - name: config AWS confidential
-        uses: aws-actions/configure-aws-confidentials@v1
+      - name: config AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
