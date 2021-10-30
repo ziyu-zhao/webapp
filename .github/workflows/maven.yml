@@ -43,6 +43,7 @@ jobs:
         run: |
           aws s3 sync ./zzyweb s3://${{ env.S3_BUCKET }}
 
+
       - name: codedeploy API call
         run: |
           output=$(aws deploy create-deployment \
