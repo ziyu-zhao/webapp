@@ -1,5 +1,3 @@
 #!/bin/bash
 
-cd /usr/local
-
-java -jar web.app
+java -jar /usr/local/web.jar
