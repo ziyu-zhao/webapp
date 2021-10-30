@@ -25,8 +25,8 @@ jobs:
       - name: package
         run: |
           zip -r ${{ env.NAME }} /home/runner/work/webapp/webapp/target/CSYE6225_zzy-0.0.1-SNAPSHOT.jar codedeploy/*.sh appspec.yml
-          mkdir target
-          mv ${{ env.NAME }} target/
+          mkdir zzyweb
+          mv ${{ env.NAME }} zzyweb/
           ls -al
 
       - name: config AWS credentials
@@ -38,4 +38,4 @@ jobs:
 
       - name: copy artifact to s3
         run: |
-          aws s3 sync ./target s3://${{ env.S3_BUCKET }}
+          aws s3 sync ./zzyweb s3://${{ env.S3_BUCKET }}
