@@ -1,0 +1,12 @@
+version: 0.0
+os: linux
+
+files:
+  - source: ./web.jar
+    destination: /usr/local
+
+hooks:
+  AfterInstall:
+    - location: ./start.sh
+      timeout: 180
+      runas: ubuntu

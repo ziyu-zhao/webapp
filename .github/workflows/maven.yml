@@ -24,8 +24,8 @@ jobs:
 
       - name: package
         run: |
-          mv /home/runner/work/webapp/webapp/target/CSYE6225_zzy-0.0.1-SNAPSHOT.jar /home/runner/work/webapp/webapp/target/web.jar
-          zip -r ${{ env.NAME }} /home/runner/work/webapp/webapp/target/web.jar codedeploy/*.sh appspec.yml
+          mv /home/runner/work/webapp/webapp/target/CSYE6225_zzy-0.0.1-SNAPSHOT.jar web.jar
+          zip -r ${{ env.NAME }} web.jar codedeploy/*.sh appspec.yml
           mkdir zzyweb
           mv ${{ env.NAME }} zzyweb/
           ls -al
@@ -41,19 +41,19 @@ jobs:
         run: |
           aws s3 sync ./zzyweb s3://${{ env.S3_BUCKET }}
 
-#      - name: codedeploy API call
-#        run: |
-#          output=$(aws deploy create-deployment \
-#          --application-name ${{ env.APP_NAME }} \
-#          --deployment-config-name CodeDeployDefault.AllAtOnce \
-#          --deployment-group-name ${{ env.APP_DEPLOY_GROUP_NAME }} \
-#          --description "CSYE6225-code-deploy" \
-#          --s3-location bucket=${{ env.S3_BUCKET }},key=${{ env.NAME }},bundleType=zip \
-#          --region ${{ env.AWS_REGION }} \
-#          --output json)
-#
-#        echo $output
-#
-#        dID = $(echo $output | jq -r '.deploymentId')
-#
-#        aws deploy wait deployment-successful --deployment-id $dID
+      - name: codedeploy API call
+        run: |
+          output=$(aws deploy create-deployment \
+          --application-name ${{ env.APP_NAME }} \
+          --deployment-config-name CodeDeployDefault.AllAtOnce \
+          --deployment-group-name ${{ env.APP_DEPLOY_GROUP_NAME }} \
+          --description "CSYE6225-code-deploy" \
+          --s3-location bucket=${{ env.S3_BUCKET }},key=${{ env.NAME }},bundleType=zip \
+          --region ${{ env.AWS_REGION }} \
+          --output json)
+
+        echo $output
+
+        dID = $(echo $output | jq -r '.deploymentId')
+
+        aws deploy wait deployment-successful --deployment-id $dID
