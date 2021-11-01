@@ -24,10 +24,10 @@ import java.util.Date;
 
 @Service
 public class AmazonService {
-    @Value("${custom.aws.accessKey}")
-    private String accessKey;
-    @Value("${custom.aws.accessSecret}")
-    private String accessSecret;
+//    @Value("${custom.aws.accessKey}")
+//    private String accessKey;
+//    @Value("${custom.aws.accessSecret}")
+//    private String accessSecret;
     @Value("${custom.aws.bucket}")
     private String bucket;
 
@@ -39,12 +39,12 @@ public class AmazonService {
         configuration.setProtocol(Protocol.HTTP);
         configuration.disableSocketProxy();
 
-        AWSCredentials awsCredentials = new BasicAWSCredentials(accessKey,accessSecret);
-        AWSCredentialsProvider awsCredentialsProvider = new AWSStaticCredentialsProvider(awsCredentials);
+        //AWSCredentials awsCredentials = new BasicAWSCredentials(accessKey,accessSecret);
+        //AWSCredentialsProvider awsCredentialsProvider = new AWSStaticCredentialsProvider(awsCredentials);
 
         amazonS3 = AmazonS3Client.builder()
                 .withClientConfiguration(configuration)
-                .withCredentials(awsCredentialsProvider)
+                //.withCredentials(awsCredentialsProvider)
                 .withRegion(Regions.US_EAST_1)
                 .enablePathStyleAccess()
                 .build();
