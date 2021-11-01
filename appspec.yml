@@ -3,7 +3,7 @@ os: linux
 
 files:
   - source: web.jar
-    destination: /home/ubuntu/web
+    destination: /usr/local
 hooks:
   BeforeInstall:
     - location: codedeploy/beforeInstall.sh
