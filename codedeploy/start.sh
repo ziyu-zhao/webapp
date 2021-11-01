@@ -1,3 +1,3 @@
 #!/bin/bash
 
-java -jar /usr/local/web.jar >/dev/null 2>&1 &
+java -jar /home/ubuntu/web.jar >/dev/null 2>&1 &
