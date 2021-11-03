@@ -3,7 +3,7 @@ name: java package
 env:
   NAME: csye6225-webapp-zzy.zip
   AWS_REGION: us-east-1
-  S3_BUCKET: codedeploy.zzyweb
+  S3_BUCKET: codedeploy.zzyweb.prod
   APP_NAME: csye6225-webapp
   APP_DEPLOY_GROUP_NAME: csye6225-webapp-deployment
 
@@ -42,8 +42,8 @@ jobs:
       - name: config AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_PROD }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY_PROD }}
           aws-region: ${{ env.AWS_REGION }}
 
       - name: copy artifact to s3
