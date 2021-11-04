@@ -207,7 +207,7 @@ public class UserController {
         }
 
         fileMapper.deleteFile(user.getID());
-        return "";
+        return "deleted";
     }
 
 }
