@@ -33,9 +33,9 @@ public class AmazonService {
 
     @PostConstruct
     public void init(){
-//        ClientConfiguration configuration = new ClientConfiguration();
-//        configuration.setProtocol(Protocol.HTTP);
-//        configuration.disableSocketProxy();
+        ClientConfiguration configuration = new ClientConfiguration();
+        configuration.setProtocol(Protocol.HTTP);
+        configuration.disableSocketProxy();
 //
 //        AWSCredentials awsCredentials = new BasicAWSCredentials(accessKey,accessSecret);
 //        AWSCredentialsProvider awsCredentialsProvider = new AWSStaticCredentialsProvider(awsCredentials);
@@ -47,9 +47,18 @@ public class AmazonService {
 //                .enablePathStyleAccess()
 //                .build();
 
+        AWSCredentialsProvider awsCredentialsProvider = new InstanceProfileCredentialsProvider(false);
+        System.out.println("keyid:"+awsCredentialsProvider.getCredentials().getAWSAccessKeyId());
+        System.out.println("sid:"+awsCredentialsProvider.getCredentials().getAWSSecretKey());
+
+
         amazonS3 = AmazonS3ClientBuilder.standard()
-                .withCredentials(new InstanceProfileCredentialsProvider(false))
+                .withClientConfiguration(configuration)
+                .withCredentials(awsCredentialsProvider)
+                .withRegion(Regions.US_EAST_1)
+                .enablePathStyleAccess()
                 .build();
+
     }
 
     public AmazonFileModel upload(MultipartFile file, String uid){
