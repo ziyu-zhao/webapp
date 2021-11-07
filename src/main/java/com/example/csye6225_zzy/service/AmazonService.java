@@ -10,6 +10,7 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectResult;
 import com.example.csye6225_zzy.pojo.AmazonFileModel;
@@ -35,20 +36,21 @@ public class AmazonService {
 
     @PostConstruct
     public void init(){
-        ClientConfiguration configuration = new ClientConfiguration();
-        configuration.setProtocol(Protocol.HTTP);
-        configuration.disableSocketProxy();
+//        ClientConfiguration configuration = new ClientConfiguration();
+//        configuration.setProtocol(Protocol.HTTP);
+//        configuration.disableSocketProxy();
+//
+//        AWSCredentials awsCredentials = new BasicAWSCredentials(accessKey,accessSecret);
+//        AWSCredentialsProvider awsCredentialsProvider = new AWSStaticCredentialsProvider(awsCredentials);
+//
+//        amazonS3 = AmazonS3Client.builder()
+//                .withClientConfiguration(configuration)
+//                .withCredentials(awsCredentialsProvider)
+//                .withRegion(Regions.US_EAST_1)
+//                .enablePathStyleAccess()
+//                .build();
 
-        AWSCredentials awsCredentials = new BasicAWSCredentials(accessKey,accessSecret);
-        AWSCredentialsProvider awsCredentialsProvider = new AWSStaticCredentialsProvider(awsCredentials);
-
-        amazonS3 = AmazonS3Client.builder()
-                .withClientConfiguration(configuration)
-                .withCredentials(awsCredentialsProvider)
-                .withRegion(Regions.US_EAST_1)
-                .enablePathStyleAccess()
-                .build();
-
+        amazonS3 = AmazonS3ClientBuilder.defaultClient();
     }
 
     public AmazonFileModel upload(MultipartFile file, String uid){
