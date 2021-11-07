@@ -3,10 +3,7 @@ package com.example.csye6225_zzy.service;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.ClientConfiguration;
 import com.amazonaws.Protocol;
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.AWSCredentialsProvider;
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.auth.*;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
@@ -50,7 +47,9 @@ public class AmazonService {
 //                .enablePathStyleAccess()
 //                .build();
 
-        amazonS3 = AmazonS3ClientBuilder.defaultClient();
+        amazonS3 = AmazonS3ClientBuilder.standard()
+                .withCredentials(new InstanceProfileCredentialsProvider(false))
+                .build();
     }
 
     public AmazonFileModel upload(MultipartFile file, String uid){
