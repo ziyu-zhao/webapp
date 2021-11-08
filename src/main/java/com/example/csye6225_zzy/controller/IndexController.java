@@ -89,6 +89,6 @@ public class IndexController {
     @ApiOperation("welcome page")
     @GetMapping("/")
     public String hello(){
-        return "hello, zzy!!! " + EC2MetadataUtils.getPrivateIpAddress();
+        return "hello, zzy!!!! " + EC2MetadataUtils.getPrivateIpAddress();
     }
 }
