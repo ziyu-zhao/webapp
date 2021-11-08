@@ -1,9 +1,11 @@
 package com.example.csye6225_zzy.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.example.csye6225_zzy.mapper.UserMapper;
+import com.amazonaws.util.EC2MetadataUtils;
 import com.example.csye6225_zzy.pojo.User;
+import com.example.csye6225_zzy.service.UserService;
 import com.example.csye6225_zzy.utils.JWTUtil;
+import com.timgroup.statsd.StatsDClient;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +26,7 @@ import java.util.UUID;
 public class IndexController {
 
     @Autowired
-    private UserMapper userMapper;
+    private UserService userService;
 
     @Autowired
     private HttpServletRequest request;
@@ -40,6 +42,7 @@ public class IndexController {
     @ApiOperation("create new user")
     @PostMapping(path = "/v1/user", consumes = "application/json")
     public String createUser(@RequestBody String json){
+
         try {
             Map<String,String> map = JSON.parseObject(json,HashMap.class);
             String username = map.get("email");
@@ -49,7 +52,7 @@ public class IndexController {
                 return "invalid email";
             }
 
-            if (userMapper.selectByName(username)!=null){
+            if (userService.selectByName(username)!=null){
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 return "user exists";
             }
@@ -62,7 +65,7 @@ public class IndexController {
                     format.format(new Date()),
                     format.format(new Date()));
 
-            userMapper.addUser(user);
+            userService.addUser(user);
             response.addHeader("token", JWTUtil.sign(username,password));
 
             Map<String,String> RUser = new HashMap<>();
@@ -86,6 +89,6 @@ public class IndexController {
     @ApiOperation("welcome page")
     @GetMapping("/")
     public String hello(){
-        return "hello, zzy!!!";
+        return "hello, zzy!!! " + EC2MetadataUtils.getPrivateIpAddress();
     }
 }

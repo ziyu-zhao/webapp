@@ -4,6 +4,8 @@ os: linux
 files:
   - source: web.jar
     destination: /usr/local/web
+  - source: cloudwatch-config.json
+    destination: /opt
 hooks:
   BeforeInstall:
     - location: codedeploy/beforeInstall.sh
@@ -11,5 +13,9 @@ hooks:
       runas: ubuntu
   ApplicationStart:
     - location: codedeploy/applicationStart.sh
+      timeout: 180
+      runas: ubuntu
+  AfterInstall:
+    - location: codedeploy/afterInstall.sh
       timeout: 180
       runas: ubuntu

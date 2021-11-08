@@ -2,11 +2,11 @@ package com.example.csye6225_zzy.controller;
 
 
 import com.alibaba.fastjson.JSON;
-import com.example.csye6225_zzy.mapper.FileMapper;
-import com.example.csye6225_zzy.mapper.UserMapper;
 import com.example.csye6225_zzy.pojo.AmazonFileModel;
 import com.example.csye6225_zzy.pojo.User;
 import com.example.csye6225_zzy.service.AmazonService;
+import com.example.csye6225_zzy.service.FileService;
+import com.example.csye6225_zzy.service.UserService;
 import com.example.csye6225_zzy.utils.JWTUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -30,7 +30,7 @@ import java.util.Map;
 public class UserController {
 
     @Autowired
-    private UserMapper userMapper;
+    private UserService userService;
 
     @Autowired
     private HttpServletRequest request;
@@ -45,13 +45,15 @@ public class UserController {
     private AmazonService amazonService;
 
     @Autowired
-    private FileMapper fileMapper;
+    private FileService fileService;
 
     private SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+
 
     @ApiOperation("get user information")
     @GetMapping("/v1/user/self")
     public String getUser(){
+
         String token = request.getHeader("token");
         if (token==null) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
@@ -59,7 +61,7 @@ public class UserController {
         }
 
         String username = JWTUtil.getName(token);
-        User user = userMapper.selectByName(username);
+        User user = userService.selectByName(username);
         if (user==null) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return "user not found, get default user";
@@ -72,12 +74,14 @@ public class UserController {
         RUser.put("username",user.getUsername());
         RUser.put("accountCreated",user.getAccountCreated());
         RUser.put("accountUpdated",user.getAccountUpdated());
+
         return JSON.toJSONString(RUser);
     }
 
     @ApiOperation("update user information")
     @PutMapping(path = "/v1/user/self", consumes = "application/json")
     public String updateUser(@RequestBody Map<String, String> map){
+
         String token = request.getHeader("token");
 
         if (token==null) {
@@ -86,7 +90,7 @@ public class UserController {
         }
 
         String username = JWTUtil.getName(token);
-        User user = userMapper.selectByName(username);
+        User user = userService.selectByName(username);
         if (user==null) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return "user not found, get default user";
@@ -102,7 +106,7 @@ public class UserController {
         user.setPassword(bCryptPasswordEncoder.encode(map.get("password")));
         user.setAccountUpdated(format.format(new Date()));
 
-        userMapper.updateUser(user);
+        userService.updateUser(user);
 
         Map<String,String> RUser = new HashMap<>();
         RUser.put("ID",user.getID());
@@ -111,12 +115,14 @@ public class UserController {
         RUser.put("username",user.getUsername());
         RUser.put("accountCreated",user.getAccountCreated());
         RUser.put("accountUpdated",user.getAccountUpdated());
+
         return JSON.toJSONString(RUser);
     }
 
     @ApiOperation("upload/update user profile")
     @PostMapping(value = "/v1/user/self/pic")
     public String uploadProfile(@RequestParam("file")@Nullable MultipartFile file){
+
         if (file==null){
             response.setStatus(HttpStatus.BAD_REQUEST.value());
             return "no file uploaded";
@@ -129,7 +135,7 @@ public class UserController {
         }
 
         String username = JWTUtil.getName(token);
-        User user = userMapper.selectByName(username);
+        User user = userService.selectByName(username);
         if (user==null) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return "user not found";
@@ -146,10 +152,10 @@ public class UserController {
         }
 
         amazonFileModel.setUploadTime(format.format(new Date()));
-        if (fileMapper.searchByID(ID)!=null){
-            fileMapper.updateFile(amazonFileModel);
+        if (fileService.searchByID(ID)!=null){
+            fileService.updateFile(amazonFileModel);
         }else {
-            fileMapper.addFile(amazonFileModel);
+            fileService.addFile(amazonFileModel);
         }
 
         return JSON.toJSONString(amazonFileModel);
@@ -158,6 +164,7 @@ public class UserController {
     @ApiOperation("get user profile")
     @GetMapping("/v1/user/self/pic")
     public String getProfile(){
+
         String token = request.getHeader("token");
 
         if (token==null) {
@@ -166,13 +173,13 @@ public class UserController {
         }
 
         String username = JWTUtil.getName(token);
-        User user = userMapper.selectByName(username);
+        User user = userService.selectByName(username);
         if (user==null) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return "user not found";
         }
 
-        AmazonFileModel amazonFileModel = fileMapper.searchByID(user.getID());
+        AmazonFileModel amazonFileModel = fileService.searchByID(user.getID());
         if (amazonFileModel==null){
             return "user profile not found";
         }
@@ -192,7 +199,7 @@ public class UserController {
         }
 
         String username = JWTUtil.getName(token);
-        User user = userMapper.selectByName(username);
+        User user = userService.selectByName(username);
         if (user==null) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return "user not found";
@@ -206,7 +213,7 @@ public class UserController {
             return "error, cannot delete";
         }
 
-        fileMapper.deleteFile(user.getID());
+        fileService.deleteFile(user.getID());
         return " deleted";
     }
 

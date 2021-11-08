@@ -34,7 +34,7 @@ jobs:
       - name: package
         run: |
           mv /home/runner/work/webapp/webapp/target/CSYE6225_zzy-0.0.1-SNAPSHOT.jar web.jar
-          zip -r ${{ env.NAME }} web.jar codedeploy/*.sh appspec.yml
+          zip -r ${{ env.NAME }} web.jar codedeploy/*.sh appspec.yml cloudwatch-config.json
           mkdir zzyweb
           mv ${{ env.NAME }} zzyweb/
           ls -al
