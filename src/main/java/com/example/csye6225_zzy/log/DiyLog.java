@@ -15,22 +15,24 @@ public class DiyLog {
     private StatsDClient statsDClient;
 
     @Around("execution(* com.example.csye6225_zzy.controller.*.*(..))")
-    public void aroundWebApi(ProceedingJoinPoint joinPoint) throws Throwable {
+    public Object aroundWebApi(ProceedingJoinPoint joinPoint) throws Throwable {
         String sign = String.valueOf(joinPoint.getSignature());
         statsDClient.incrementCounter(sign);
         long executeTime1 = System.currentTimeMillis();
-        joinPoint.proceed();
+        Object result = joinPoint.proceed();
         long executeTime2 = System.currentTimeMillis();
         statsDClient.recordExecutionTime(sign,(executeTime2-executeTime1));
+        return result;
     }
 
     @Around("execution(* com.example.csye6225_zzy.service.*.*(..))")
-    public void aroundS3(ProceedingJoinPoint joinPoint) throws Throwable {
+    public Object aroundS3(ProceedingJoinPoint joinPoint) throws Throwable {
         String sign = String.valueOf(joinPoint.getSignature());
         long executeTime1 = System.currentTimeMillis();
-        joinPoint.proceed();
+        Object result = joinPoint.proceed();
         long executeTime2 = System.currentTimeMillis();
         statsDClient.recordExecutionTime(sign,(executeTime2-executeTime1));
+        return result;
     }
     
 }

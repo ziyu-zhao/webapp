@@ -14,14 +14,14 @@
     </select>
 
     <insert id="addFile" parameterType="amazonFileModel">
-        insert into amazon_file_model (ID, fileName, url, uploadTime)
-        values (#{ID},#{fileName},#{url},#{uploadTime})
+        insert into amazon_file_model (ID, filename, url, upload_time)
+        values (#{ID},#{filename},#{url},#{uploadTime})
     </insert>
 
     <update id="updateFile" parameterType="amazonFileModel">
-        update amazon_file_model set fileName=#{fileName},
+        update amazon_file_model set filename=#{filename},
                         url=#{url},
-                        uploadTime=#{uploadTime}
+                        upload_time=#{uploadTime}
         where id=#{ID}
     </update>
 

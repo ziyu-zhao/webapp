@@ -10,14 +10,14 @@
     </select>
 
     <insert id="addUser" parameterType="user">
-        insert into user (ID, firstname, lastname, password, username, accountCreated, accountUpdated)
+        insert into user (ID, firstname, lastname, password, username, account_created, account_updated)
         values (#{ID},#{firstname},#{lastname},#{password},#{username},#{accountCreated},#{accountUpdated})
     </insert>
 
     <update id="updateUser" parameterType="user">
         update user set firstname=#{firstname},lastname=#{lastname},
                         password=#{password},username=#{username},
-                        accountCreated=#{accountCreated},accountUpdated=#{accountUpdated}
+                        account_created=#{accountCreated},account_updated=#{accountUpdated}
         where id=#{ID}
     </update>
 
