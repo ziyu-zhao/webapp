@@ -75,7 +75,6 @@ public class IndexController {
             RUser.put("username",user.getUsername());
             RUser.put("accountCreated",user.getAccountCreated());
             RUser.put("accountUpdated",user.getAccountUpdated());
-
             return JSON.toJSONString(RUser);
         }catch (Exception e){
             e.printStackTrace();
