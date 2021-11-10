@@ -75,7 +75,6 @@ public class IndexController {
             RUser.put("username",user.getUsername());
             RUser.put("accountCreated",user.getAccountCreated());
             RUser.put("accountUpdated",user.getAccountUpdated());
-            RUser.put("EC2_local_ip", EC2MetadataUtils.getPrivateIpAddress());
             return JSON.toJSONString(RUser);
         }catch (Exception e){
             e.printStackTrace();
@@ -90,6 +89,6 @@ public class IndexController {
     @ApiOperation("welcome page")
     @GetMapping("/")
     public String hello(){
-        return "hello, zzy!!! " + EC2MetadataUtils.getPrivateIpAddress();
+        return "hello, zzy!!! ";
     }
 }

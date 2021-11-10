@@ -1,5 +1,6 @@
 package com.example.csye6225_zzy.log;
 
+import com.amazonaws.util.EC2MetadataUtils;
 import com.timgroup.statsd.StatsDClient;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -27,7 +28,7 @@ public class DiyLog {
         Object result = joinPoint.proceed();
         long executeTime2 = System.currentTimeMillis();
         statsDClient.recordExecutionTime(sign,(executeTime2-executeTime1));
-        return result;
+        return result + EC2MetadataUtils.getPrivateIpAddress();
     }
 
     @Around("execution(* com.example.csye6225_zzy.service.*.*(..))")
