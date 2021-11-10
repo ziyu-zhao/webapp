@@ -2,6 +2,7 @@ package com.example.csye6225_zzy.controller;
 
 
 import com.alibaba.fastjson.JSON;
+import com.amazonaws.util.EC2MetadataUtils;
 import com.example.csye6225_zzy.pojo.AmazonFileModel;
 import com.example.csye6225_zzy.pojo.User;
 import com.example.csye6225_zzy.service.AmazonService;
@@ -74,6 +75,7 @@ public class UserController {
         RUser.put("username",user.getUsername());
         RUser.put("accountCreated",user.getAccountCreated());
         RUser.put("accountUpdated",user.getAccountUpdated());
+        RUser.put("EC2_local_ip", EC2MetadataUtils.getPrivateIpAddress());
 
         return JSON.toJSONString(RUser);
     }
@@ -115,6 +117,7 @@ public class UserController {
         RUser.put("username",user.getUsername());
         RUser.put("accountCreated",user.getAccountCreated());
         RUser.put("accountUpdated",user.getAccountUpdated());
+        RUser.put("EC2_local_ip", EC2MetadataUtils.getPrivateIpAddress());
 
         return JSON.toJSONString(RUser);
     }
@@ -158,7 +161,7 @@ public class UserController {
             fileService.addFile(amazonFileModel);
         }
 
-        return JSON.toJSONString(amazonFileModel);
+        return JSON.toJSONString(amazonFileModel)+EC2MetadataUtils.getPrivateIpAddress();
     }
 
     @ApiOperation("get user profile")
@@ -184,7 +187,7 @@ public class UserController {
             return "user profile not found";
         }
 
-        return JSON.toJSONString(amazonFileModel);
+        return JSON.toJSONString(amazonFileModel)+EC2MetadataUtils.getPrivateIpAddress();
 
     }
 
@@ -214,7 +217,7 @@ public class UserController {
         }
 
         fileService.deleteFile(user.getID());
-        return " deleted";
+        return " deleted " + EC2MetadataUtils.getPrivateIpAddress();
     }
 
 }
