@@ -87,7 +87,7 @@ public class IndexController {
 
 
     @ApiOperation("welcome page")
-    @GetMapping("/")
+    @GetMapping("/hello")
     public String hello(){
         return "hello, zzy!!! ";
     }
