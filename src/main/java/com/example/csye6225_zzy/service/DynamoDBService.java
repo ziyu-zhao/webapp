@@ -43,7 +43,10 @@ public class DynamoDBService {
 
                 CreateTableRequest request = new CreateTableRequest().withTableName(tableName)
                         .withAttributeDefinitions(attributeDefinitions)
-                        .withKeySchema(keySchema);
+                        .withKeySchema(keySchema)
+                        .withProvisionedThroughput(new ProvisionedThroughput()
+                                .withReadCapacityUnits(5L)
+                                .withWriteCapacityUnits(5L));
 
                 table = dynamoDB.createTable(request);
 
