@@ -67,7 +67,7 @@ public class DynamoDBService {
 
         }
 
-        TableDescription tableDescription = table.describe();
+        TableDescription tableDescription = dynamoDB.getTable(tableName).describe();
         System.out.format(
                 "Name: %s:\n" + "Status: %s \n" + "Provisioned Throughput (read capacity units/sec): %d \n"
                         + "Provisioned Throughput (write capacity units/sec): %d \n",
@@ -89,7 +89,7 @@ public class DynamoDBService {
 
     public String getItem(String ID){
         Item item = null;
-        String token = null;
+        String token;
         try {
             item = table.getItem("ID", ID, "ID, token, TTL", null);
 
