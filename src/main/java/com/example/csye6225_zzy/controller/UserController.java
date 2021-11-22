@@ -115,6 +115,7 @@ public class UserController {
         RUser.put("username",user.getUsername());
         RUser.put("accountCreated",user.getAccountCreated());
         RUser.put("accountUpdated",user.getAccountUpdated());
+        RUser.put("verifyTime",user.getVerifiedTime());
 
         return JSON.toJSONString(RUser);
     }
@@ -215,6 +216,33 @@ public class UserController {
 
         fileService.deleteFile(user.getID());
         return " deleted";
+    }
+
+    @GetMapping("/v1/user/verify/{username}/{verifyToken}")
+    public String verifyUser(@PathVariable("username") String username,
+                             @PathVariable("verifyToken") String verifyToken){
+        User user = userService.selectByName(username);
+        if (user==null) {
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            return "user not found";
+        }
+
+        user.setVerified("true");
+        user.setVerifiedTime(format.format(new Date()));
+
+        userService.updateUser(user);
+
+        Map<String,String> RUser = new HashMap<>();
+        RUser.put("ID",user.getID());
+        RUser.put("firstname",user.getFirstname());
+        RUser.put("lastname",user.getLastname());
+        RUser.put("username",user.getUsername());
+        RUser.put("accountCreated",user.getAccountCreated());
+        RUser.put("accountUpdated",user.getAccountUpdated());
+        RUser.put("verifyTime",user.getVerifiedTime());
+
+        return JSON.toJSONString(RUser);
+
     }
 
     @DeleteMapping(path = "/v1/user/{username}")

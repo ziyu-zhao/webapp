@@ -73,7 +73,12 @@ public class IndexController {
                     null);
 
             userService.addUser(user);
-            amazonService.publishSNSMessage(username);
+
+            Map<String,String> message = new HashMap<>();
+            message.put("username",username);
+            message.put("verifyToken","zzyToken");
+            message.put("type","json");
+            amazonService.publishSNSMessage(JSON.toJSONString(message));
 
             response.addHeader("token", JWTUtil.sign(username,password));
 

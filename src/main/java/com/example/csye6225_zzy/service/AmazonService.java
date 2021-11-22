@@ -100,7 +100,8 @@ public class AmazonService {
         amazonSNS.publish(new PublishRequest()
                 .withTopicArn(SNSTopicArn)
                 .withMessage(message)
-                .withMessageAttributes(getSmsAttributes()));
+                //.withMessageAttributes(getSmsAttributes())
+        );
     }
 
     private Map<String, MessageAttributeValue> getSmsAttributes(){
