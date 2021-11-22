@@ -22,7 +22,7 @@
     </update>
 
     <delete id="deleteUser">
-        delete from user where ID=#{ID}}
+        delete from user where ID=#{ID}
     </delete>
 
 </mapper>
