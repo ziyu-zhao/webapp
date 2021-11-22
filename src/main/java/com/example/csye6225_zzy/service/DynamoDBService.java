@@ -42,12 +42,9 @@ public class DynamoDBService {
             try {
                 List<AttributeDefinition> attributeDefinitions = new ArrayList<>();
                 attributeDefinitions.add(new AttributeDefinition().withAttributeName("ID").withAttributeType("S"));
-                attributeDefinitions.add(new AttributeDefinition().withAttributeName("TTL").withAttributeType("N"));
-
 
                 List<KeySchemaElement> keySchema = new ArrayList<>();
                 keySchema.add(new KeySchemaElement().withAttributeName("ID").withKeyType(KeyType.HASH));
-                keySchema.add(new KeySchemaElement().withAttributeName("TTL").withKeyType(KeyType.RANGE));
 
                 CreateTableRequest request = new CreateTableRequest().withTableName(tableName)
                         .withAttributeDefinitions(attributeDefinitions)
@@ -91,15 +88,14 @@ public class DynamoDBService {
         Item item = null;
         String token;
         try {
-            item = table.getItem("ID", ID, "ID, token, TTL", null);
+            item = table.getItem("ID", ID);
 
         }catch (Exception e){
             e.printStackTrace();
         }
         if (item!=null){
-            Map<String,Object> map = item.asMap();
-            if (Long.parseLong(String.valueOf(map.get("TTL")))<=System.currentTimeMillis()){
-                token = (String) item.asMap().get("token");
+            if (Long.parseLong(String.valueOf(item.get("TTL")))<=System.currentTimeMillis()){
+                token = (String) item.get("token");
                 return token;
             }
 
