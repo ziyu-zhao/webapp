@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.example.csye6225_zzy.pojo.AmazonFileModel;
 import com.example.csye6225_zzy.pojo.User;
 import com.example.csye6225_zzy.service.AmazonService;
+import com.example.csye6225_zzy.service.DynamoDBService;
 import com.example.csye6225_zzy.service.FileService;
 import com.example.csye6225_zzy.service.UserService;
 import com.example.csye6225_zzy.utils.JWTUtil;
@@ -31,6 +32,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private DynamoDBService dynamoDBService;
 
     @Autowired
     private HttpServletRequest request;
@@ -67,6 +71,11 @@ public class UserController {
             return "user not found, get default user";
         }
 
+        if (user.getVerified().equals("false")){
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            return "user not verified";
+        }
+
         Map<String,String> RUser = new HashMap<>();
         RUser.put("ID",user.getID());
         RUser.put("firstname",user.getFirstname());
@@ -94,6 +103,11 @@ public class UserController {
         if (user==null) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return "user not found, get default user";
+        }
+
+        if (user.getVerified().equals("false")){
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            return "user not verified";
         }
 
         if (!map.get("email").equals(user.getUsername())){
@@ -142,6 +156,11 @@ public class UserController {
             return "user not found";
         }
 
+        if (user.getVerified().equals("false")){
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            return "user not verified";
+        }
+
         String ID = user.getID();
         AmazonFileModel amazonFileModel= null;
         try{
@@ -180,6 +199,11 @@ public class UserController {
             return "user not found";
         }
 
+        if (user.getVerified().equals("false")){
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            return "user not verified";
+        }
+
         AmazonFileModel amazonFileModel = fileService.searchByID(user.getID());
         if (amazonFileModel==null){
             return "user profile not found";
@@ -206,6 +230,11 @@ public class UserController {
             return "user not found";
         }
 
+        if (user.getVerified().equals("false")){
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            return "user not verified";
+        }
+
         try{
             amazonService.delete(user.getID());
         }catch (Exception e){
@@ -225,6 +254,11 @@ public class UserController {
         if (user==null) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return "user not found";
+        }
+
+        if (dynamoDBService.getItem(user.getID())==null){
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            return "verifyToken expired or not found";
         }
 
         user.setVerified("true");

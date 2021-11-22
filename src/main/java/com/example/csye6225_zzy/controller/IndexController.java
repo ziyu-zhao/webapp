@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.amazonaws.util.EC2MetadataUtils;
 import com.example.csye6225_zzy.pojo.User;
 import com.example.csye6225_zzy.service.AmazonService;
+import com.example.csye6225_zzy.service.DynamoDBService;
 import com.example.csye6225_zzy.service.FileService;
 import com.example.csye6225_zzy.service.UserService;
 import com.example.csye6225_zzy.utils.JWTUtil;
@@ -32,6 +33,9 @@ public class IndexController {
 
     @Autowired
     private AmazonService amazonService;
+
+    @Autowired
+    private DynamoDBService dynamoDBService;
 
     @Autowired
     private HttpServletRequest request;
@@ -74,9 +78,12 @@ public class IndexController {
 
             userService.addUser(user);
 
+            String verityToken = user.getID()+user.getFirstname();
+            dynamoDBService.createItems(user.getID(),verityToken);
+
             Map<String,String> message = new HashMap<>();
             message.put("username",username);
-            message.put("verifyToken","zzyToken");
+            message.put("verifyToken",verityToken);
             message.put("type","json");
             amazonService.publishSNSMessage(JSON.toJSONString(message));
 
