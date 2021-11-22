@@ -34,12 +34,12 @@ public class DynamoDBService {
             try {
                 List<AttributeDefinition> attributeDefinitions = new ArrayList<>();
                 attributeDefinitions.add(new AttributeDefinition().withAttributeName("ID").withAttributeType("S"));
-                attributeDefinitions.add(new AttributeDefinition().withAttributeName("token").withAttributeType("S"));
                 attributeDefinitions.add(new AttributeDefinition().withAttributeName("TTL").withAttributeType("N"));
 
 
                 List<KeySchemaElement> keySchema = new ArrayList<>();
                 keySchema.add(new KeySchemaElement().withAttributeName("ID").withKeyType(KeyType.HASH));
+                keySchema.add(new KeySchemaElement().withAttributeName("TTL").withKeyType(KeyType.RANGE));
 
                 CreateTableRequest request = new CreateTableRequest().withTableName(tableName)
                         .withAttributeDefinitions(attributeDefinitions)
