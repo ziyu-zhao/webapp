@@ -3,6 +3,7 @@ package com.example.csye6225_zzy.controller;
 import com.alibaba.fastjson.JSON;
 import com.amazonaws.util.EC2MetadataUtils;
 import com.example.csye6225_zzy.pojo.User;
+import com.example.csye6225_zzy.service.AmazonService;
 import com.example.csye6225_zzy.service.FileService;
 import com.example.csye6225_zzy.service.UserService;
 import com.example.csye6225_zzy.utils.JWTUtil;
@@ -28,6 +29,9 @@ public class IndexController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private AmazonService amazonService;
 
     @Autowired
     private HttpServletRequest request;
@@ -69,6 +73,8 @@ public class IndexController {
                     null);
 
             userService.addUser(user);
+            amazonService.publishSNSMessage(username);
+
             response.addHeader("token", JWTUtil.sign(username,password));
 
             Map<String,String> RUser = new HashMap<>();
