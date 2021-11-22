@@ -29,14 +29,7 @@ public class DynamoDBService {
     @PostConstruct
     public void init() throws InterruptedException {
         table = dynamoDB.getTable(tableName);
-        System.out.println("table not null");
-        TableDescription tableDescription = dynamoDB.getTable(tableName).describe();
-        System.out.format(
-                "Name: %s:\n" + "Status: %s \n" + "Provisioned Throughput (read capacity units/sec): %d \n"
-                        + "Provisioned Throughput (write capacity units/sec): %d \n",
-                tableDescription.getTableName(), tableDescription.getTableStatus(),
-                tableDescription.getProvisionedThroughput().getReadCapacityUnits(),
-                tableDescription.getProvisionedThroughput().getWriteCapacityUnits());
+
         if (table==null){
             try {
                 List<AttributeDefinition> attributeDefinitions = new ArrayList<>();
@@ -61,6 +54,14 @@ public class DynamoDBService {
             }
 
         }
+        System.out.println("table not null");
+        TableDescription tableDescription = dynamoDB.getTable(tableName).describe();
+        System.out.format(
+                "Name: %s:\n" + "Status: %s \n" + "Provisioned Throughput (read capacity units/sec): %d \n"
+                        + "Provisioned Throughput (write capacity units/sec): %d \n",
+                tableDescription.getTableName(), tableDescription.getTableStatus(),
+                tableDescription.getProvisionedThroughput().getReadCapacityUnits(),
+                tableDescription.getProvisionedThroughput().getWriteCapacityUnits());
     }
 
     public void createItems(String ID, String token){
