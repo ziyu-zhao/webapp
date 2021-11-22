@@ -256,12 +256,13 @@ public class UserController {
             return "user not found";
         }
 
-        if (dynamoDBService.getItem(user.getID())==null){
+        String token = dynamoDBService.getItem(user.getID());
+        if (token==null){
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return "not found";
         }
 
-        if (dynamoDBService.getItem(user.getID()).equals("expired")){
+        if (token.equals("expired")){
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return "verifyToken expired";
         }

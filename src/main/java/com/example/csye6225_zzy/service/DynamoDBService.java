@@ -100,11 +100,11 @@ public class DynamoDBService {
             }
 
 
-            try {
-                table.deleteItem("ID",ID);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
+//            try {
+//                table.deleteItem("ID",ID);
+//            }catch (Exception e){
+//                e.printStackTrace();
+//            }
 
             return "expired";
         }
