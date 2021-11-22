@@ -32,23 +32,30 @@ public class DynamoDBService {
     @PostConstruct
     public void init() throws InterruptedException {
         table = dynamoDB.getTable(tableName);
+        System.out.println("table not null");
         if (table==null){
-            List<AttributeDefinition> attributeDefinitions = new ArrayList<>();
-            attributeDefinitions.add(new AttributeDefinition().withAttributeName("ID").withAttributeType("S"));
-            attributeDefinitions.add(new AttributeDefinition().withAttributeName("token").withAttributeType("S"));
-            attributeDefinitions.add(new AttributeDefinition().withAttributeName("TTL").withAttributeType("N"));
+            try {
+                List<AttributeDefinition> attributeDefinitions = new ArrayList<>();
+                attributeDefinitions.add(new AttributeDefinition().withAttributeName("ID").withAttributeType("S"));
+                attributeDefinitions.add(new AttributeDefinition().withAttributeName("token").withAttributeType("S"));
+                attributeDefinitions.add(new AttributeDefinition().withAttributeName("TTL").withAttributeType("N"));
 
 
-            List<KeySchemaElement> keySchema = new ArrayList<>();
-            keySchema.add(new KeySchemaElement().withAttributeName("ID").withKeyType(KeyType.HASH));
+                List<KeySchemaElement> keySchema = new ArrayList<>();
+                keySchema.add(new KeySchemaElement().withAttributeName("ID").withKeyType(KeyType.HASH));
 
-            CreateTableRequest request = new CreateTableRequest().withTableName(tableName)
-                    .withAttributeDefinitions(attributeDefinitions)
-                    .withKeySchema(keySchema);
+                CreateTableRequest request = new CreateTableRequest().withTableName(tableName)
+                        .withAttributeDefinitions(attributeDefinitions)
+                        .withKeySchema(keySchema);
 
-            table = dynamoDB.createTable(request);
+                table = dynamoDB.createTable(request);
 
-            table.waitForActive();
+                table.waitForActive();
+            } catch (Exception e){
+                System.out.println("table can not be created");
+                e.printStackTrace();
+            }
+
         }
     }
 
