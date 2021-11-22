@@ -3,16 +3,14 @@ package com.example.csye6225_zzy.service;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.document.Table;
+import com.amazonaws.services.dynamodbv2.document.TableCollection;
 import com.amazonaws.services.dynamodbv2.document.spec.DeleteItemSpec;
 import com.amazonaws.services.dynamodbv2.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class DynamoDBService {
@@ -28,9 +26,20 @@ public class DynamoDBService {
 
     @PostConstruct
     public void init() throws InterruptedException {
-        table = dynamoDB.getTable(tableName);
+        boolean flag = false;
 
-        if (table==null){
+        TableCollection<ListTablesResult> tables = dynamoDB.listTables();
+        Iterator<Table> iterator = tables.iterator();
+
+        while (iterator.hasNext()) {
+            Table table1 = iterator.next();
+            if(table1.getTableName().equals(tableName)){
+                flag = true;
+                break;
+            }
+        }
+
+        if (!flag){
             try {
                 List<AttributeDefinition> attributeDefinitions = new ArrayList<>();
                 attributeDefinitions.add(new AttributeDefinition().withAttributeName("ID").withAttributeType("S"));
@@ -57,8 +66,8 @@ public class DynamoDBService {
             }
 
         }
-        System.out.println("table not null");
-        TableDescription tableDescription = dynamoDB.getTable(tableName).describe();
+
+        TableDescription tableDescription = table.describe();
         System.out.format(
                 "Name: %s:\n" + "Status: %s \n" + "Provisioned Throughput (read capacity units/sec): %d \n"
                         + "Provisioned Throughput (write capacity units/sec): %d \n",
