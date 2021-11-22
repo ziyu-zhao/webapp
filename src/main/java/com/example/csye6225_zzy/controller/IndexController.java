@@ -3,6 +3,7 @@ package com.example.csye6225_zzy.controller;
 import com.alibaba.fastjson.JSON;
 import com.amazonaws.util.EC2MetadataUtils;
 import com.example.csye6225_zzy.pojo.User;
+import com.example.csye6225_zzy.service.FileService;
 import com.example.csye6225_zzy.service.UserService;
 import com.example.csye6225_zzy.utils.JWTUtil;
 import com.timgroup.statsd.StatsDClient;
@@ -63,7 +64,9 @@ public class IndexController {
                     bCryptPasswordEncoder.encode(password),
                     username,
                     format.format(new Date()),
-                    format.format(new Date()));
+                    format.format(new Date()),
+                    "false",
+                    null);
 
             userService.addUser(user);
             response.addHeader("token", JWTUtil.sign(username,password));
@@ -83,8 +86,6 @@ public class IndexController {
         }
 
     }
-
-
 
     @ApiOperation("welcome page")
     @GetMapping("/hello")

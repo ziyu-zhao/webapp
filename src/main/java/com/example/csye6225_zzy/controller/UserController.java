@@ -217,4 +217,24 @@ public class UserController {
         return " deleted";
     }
 
+    @DeleteMapping(path = "/v1/user/{username}")
+    public String deleteUser(@PathVariable("username") String username){
+        User user = userService.selectByName(username);
+        if (user==null) return "user not found";
+
+        String ID = user.getID();
+        userService.deleteUser(ID);
+        if (fileService.searchByID(ID)!=null){
+            try{
+                amazonService.delete(ID);
+                fileService.deleteFile(ID);
+            }catch (Exception e){
+                e.printStackTrace();
+                response.setStatus(HttpStatus.BAD_REQUEST.value());
+                return "error, cannot delete";
+            }
+        }
+        return "deleted";
+    }
+
 }

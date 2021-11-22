@@ -25,4 +25,9 @@ public class UserService implements UserMapper {
     public void updateUser(User user) {
         userMapper.updateUser(user);
     }
+
+    @Override
+    public void deleteUser(String ID) {
+        userMapper.deleteUser(ID);
+    }
 }

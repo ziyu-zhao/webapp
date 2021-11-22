@@ -19,16 +19,14 @@ public class User implements Serializable{
 
     @Id
     private String ID;
-    @Column
+
     private String firstname;
-    @Column
     private String lastname;
-    @Column
     private String password;
-    @Column
     private String username;
-    @Column
     private String accountCreated;
-    @Column
     private String accountUpdated;
+    private String verified;
+    private String verfiiedTime;
+
 }
