@@ -82,6 +82,7 @@ public class DynamoDBService {
                     .withNumber("TTL",System.currentTimeMillis()+EXPIRE);
             table.putItem(item);
         }catch (Exception e){
+            System.out.println("fail to put item");
             e.printStackTrace();
         }
     }
