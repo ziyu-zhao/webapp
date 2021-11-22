@@ -4,10 +4,7 @@ import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.dynamodbv2.document.spec.DeleteItemSpec;
-import com.amazonaws.services.dynamodbv2.model.AttributeDefinition;
-import com.amazonaws.services.dynamodbv2.model.CreateTableRequest;
-import com.amazonaws.services.dynamodbv2.model.KeySchemaElement;
-import com.amazonaws.services.dynamodbv2.model.KeyType;
+import com.amazonaws.services.dynamodbv2.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +30,13 @@ public class DynamoDBService {
     public void init() throws InterruptedException {
         table = dynamoDB.getTable(tableName);
         System.out.println("table not null");
+        TableDescription tableDescription = dynamoDB.getTable(tableName).describe();
+        System.out.format(
+                "Name: %s:\n" + "Status: %s \n" + "Provisioned Throughput (read capacity units/sec): %d \n"
+                        + "Provisioned Throughput (write capacity units/sec): %d \n",
+                tableDescription.getTableName(), tableDescription.getTableStatus(),
+                tableDescription.getProvisionedThroughput().getReadCapacityUnits(),
+                tableDescription.getProvisionedThroughput().getWriteCapacityUnits());
         if (table==null){
             try {
                 List<AttributeDefinition> attributeDefinitions = new ArrayList<>();
@@ -81,8 +85,11 @@ public class DynamoDBService {
         }
         if (item!=null){
             Map<String,Object> map = item.asMap();
-            if (Long.parseLong(String.valueOf(map.get("TTL")))<=System.currentTimeMillis())
-               token = (String) item.asMap().get("token");
+            if (Long.parseLong(String.valueOf(map.get("TTL")))<=System.currentTimeMillis()){
+                token = (String) item.asMap().get("token");
+                return token;
+            }
+
 
             try {
                 table.deleteItem("ID",ID);
@@ -90,7 +97,7 @@ public class DynamoDBService {
                 e.printStackTrace();
             }
 
-            return token;
+            return "expired";
         }
 
         return null;

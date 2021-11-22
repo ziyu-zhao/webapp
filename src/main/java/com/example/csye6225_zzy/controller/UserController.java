@@ -258,7 +258,12 @@ public class UserController {
 
         if (dynamoDBService.getItem(user.getID())==null){
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            return "verifyToken expired or not found";
+            return "not found";
+        }
+
+        if (dynamoDBService.getItem(user.getID()).equals("expired")){
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            return "verifyToken expired";
         }
 
         user.setVerified("true");
