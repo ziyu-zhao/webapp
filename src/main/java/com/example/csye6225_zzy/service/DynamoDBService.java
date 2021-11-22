@@ -22,7 +22,7 @@ public class DynamoDBService {
 
     private Table table;
 
-    private static final long EXPIRE = 2*60*1000;
+    private static final long EXPIRE = 5*60*1000;
 
     @PostConstruct
     public void init() throws InterruptedException {
@@ -94,7 +94,7 @@ public class DynamoDBService {
             e.printStackTrace();
         }
         if (item!=null){
-            if (Long.parseLong(String.valueOf(item.get("TTL")))<=System.currentTimeMillis()){
+            if (Long.parseLong(String.valueOf(item.get("TTL")))>=System.currentTimeMillis()){
                 token = (String) item.get("token");
                 return token;
             }
