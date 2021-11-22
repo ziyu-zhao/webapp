@@ -10,7 +10,7 @@
     </select>
 
     <insert id="addUser" parameterType="user">
-        insert into user (ID, firstname, lastname, password, username, account_created, account_updated , verified, verifiedTime)
+        insert into user (ID, firstname, lastname, password, username, account_created, account_updated , verified, verified_time)
         values (#{ID},#{firstname},#{lastname},#{password},#{username},#{accountCreated},#{accountUpdated},#{verified},#{verifiedTime})
     </insert>
 
@@ -18,7 +18,7 @@
         update user set firstname=#{firstname},lastname=#{lastname},
                         password=#{password},username=#{username},
                         account_created=#{accountCreated},account_updated=#{accountUpdated},
-                        verified=#{verified},verifiedTime=#{verifiedTime}
+                        verified=#{verified},verified_time=#{verifiedTime}
         where id=#{ID}
     </update>
 
