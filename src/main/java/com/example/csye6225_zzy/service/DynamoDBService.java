@@ -26,7 +26,6 @@ public class DynamoDBService {
 
     @PostConstruct
     public void init() throws InterruptedException {
-        boolean flag = false;
 
         TableCollection<ListTablesResult> tables = dynamoDB.listTables();
         Iterator<Table> iterator = tables.iterator();
@@ -34,12 +33,12 @@ public class DynamoDBService {
         while (iterator.hasNext()) {
             Table table1 = iterator.next();
             if(table1.getTableName().equals(tableName)){
-                flag = true;
+                table = table1;
                 break;
             }
         }
 
-        if (!flag){
+        if (table==null){
             try {
                 List<AttributeDefinition> attributeDefinitions = new ArrayList<>();
                 attributeDefinitions.add(new AttributeDefinition().withAttributeName("ID").withAttributeType("S"));
@@ -67,7 +66,7 @@ public class DynamoDBService {
 
         }
 
-        TableDescription tableDescription = dynamoDB.getTable(tableName).describe();
+        TableDescription tableDescription = table.describe();
         System.out.format(
                 "Name: %s:\n" + "Status: %s \n" + "Provisioned Throughput (read capacity units/sec): %d \n"
                         + "Provisioned Throughput (write capacity units/sec): %d \n",
