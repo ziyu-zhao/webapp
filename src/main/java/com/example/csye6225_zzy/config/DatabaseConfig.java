@@ -5,6 +5,7 @@ import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
@@ -22,11 +23,28 @@ public class DatabaseConfig {
 
     private static String MAPPER_PATH = "classpath*:/mybatis/mapper/*.xml";
 
+    @Value("${database1.datasource.url}")
+    private String url;
+
+    @Value("${database1.datasource.password}")
+    private String password;
+
+    @Value("${database1.datasource.username}")
+    private String username;
+
+    @Value("${database1.datasource.driver}")
+    private String driverClass;
+
     @Bean(name = "datasource1")
     @ConfigurationProperties("database1.datasource")
     @Primary
     public DataSource dataSource1(){
-        return DataSourceBuilder.create().build();
+        return DataSourceBuilder.create().
+                url(url)
+                .username(username)
+                .password(password)
+                .driverClassName(driverClass)
+                .build();
     }
 
     @Bean(name = "sqlSessionFactory1")
