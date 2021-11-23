@@ -7,8 +7,6 @@ import org.springframework.stereotype.Repository;
 public interface FileMapper {
     void addFile(AmazonFileModel file);
 
-    AmazonFileModel searchByID(String ID);
-
     void updateFile(AmazonFileModel file);
 
     void deleteFile(String ID);

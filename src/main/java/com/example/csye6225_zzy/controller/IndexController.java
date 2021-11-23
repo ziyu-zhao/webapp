@@ -3,10 +3,7 @@ package com.example.csye6225_zzy.controller;
 import com.alibaba.fastjson.JSON;
 import com.amazonaws.util.EC2MetadataUtils;
 import com.example.csye6225_zzy.pojo.User;
-import com.example.csye6225_zzy.service.AmazonService;
-import com.example.csye6225_zzy.service.DynamoDBService;
-import com.example.csye6225_zzy.service.FileService;
-import com.example.csye6225_zzy.service.UserService;
+import com.example.csye6225_zzy.service.*;
 import com.example.csye6225_zzy.utils.JWTUtil;
 import com.timgroup.statsd.StatsDClient;
 import io.swagger.annotations.Api;
@@ -30,6 +27,9 @@ public class IndexController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserService_re userService_re;
 
     @Autowired
     private AmazonService amazonService;
@@ -61,7 +61,7 @@ public class IndexController {
                 return "invalid email";
             }
 
-            if (userService.selectByName(username)!=null){
+            if (userService_re.selectByName(username)!=null){
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 return "user exists";
             }

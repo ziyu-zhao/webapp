@@ -9,8 +9,6 @@ public interface UserMapper {
 
     void addUser(User user);
 
-    User selectByName(String name);
-
     void updateUser(User user);
 
     void deleteUser(String ID);

@@ -9,10 +9,6 @@
         delete from amazon_file_model where id=#{ID}
     </delete>
 
-    <select id="searchByID" resultType="amazonFileModel">
-        select * from amazon_file_model where id=#{ID}
-    </select>
-
     <insert id="addFile" parameterType="amazonFileModel">
         insert into amazon_file_model (ID, filename, url, upload_time)
         values (#{ID},#{filename},#{url},#{uploadTime})

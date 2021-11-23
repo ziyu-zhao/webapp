@@ -4,10 +4,7 @@ package com.example.csye6225_zzy.controller;
 import com.alibaba.fastjson.JSON;
 import com.example.csye6225_zzy.pojo.AmazonFileModel;
 import com.example.csye6225_zzy.pojo.User;
-import com.example.csye6225_zzy.service.AmazonService;
-import com.example.csye6225_zzy.service.DynamoDBService;
-import com.example.csye6225_zzy.service.FileService;
-import com.example.csye6225_zzy.service.UserService;
+import com.example.csye6225_zzy.service.*;
 import com.example.csye6225_zzy.utils.JWTUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -34,6 +31,9 @@ public class UserController {
     private UserService userService;
 
     @Autowired
+    private UserService_re userService_re;
+
+    @Autowired
     private DynamoDBService dynamoDBService;
 
     @Autowired
@@ -51,6 +51,9 @@ public class UserController {
     @Autowired
     private FileService fileService;
 
+    @Autowired
+    private FileService_re fileService_re;
+
     private SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
 
@@ -65,7 +68,7 @@ public class UserController {
         }
 
         String username = JWTUtil.getName(token);
-        User user = userService.selectByName(username);
+        User user = userService_re.selectByName(username);
         if (user==null) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return "user not found, get default user";
@@ -99,7 +102,7 @@ public class UserController {
         }
 
         String username = JWTUtil.getName(token);
-        User user = userService.selectByName(username);
+        User user = userService_re.selectByName(username);
         if (user==null) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return "user not found, get default user";
@@ -150,7 +153,7 @@ public class UserController {
         }
 
         String username = JWTUtil.getName(token);
-        User user = userService.selectByName(username);
+        User user = userService_re.selectByName(username);
         if (user==null) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return "user not found";
@@ -172,7 +175,7 @@ public class UserController {
         }
 
         amazonFileModel.setUploadTime(format.format(new Date()));
-        if (fileService.searchByID(ID)!=null){
+        if (fileService_re.searchByID(ID)!=null){
             fileService.updateFile(amazonFileModel);
         }else {
             fileService.addFile(amazonFileModel);
@@ -193,7 +196,7 @@ public class UserController {
         }
 
         String username = JWTUtil.getName(token);
-        User user = userService.selectByName(username);
+        User user = userService_re.selectByName(username);
         if (user==null) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return "user not found";
@@ -204,7 +207,7 @@ public class UserController {
             return "user not verified";
         }
 
-        AmazonFileModel amazonFileModel = fileService.searchByID(user.getID());
+        AmazonFileModel amazonFileModel = fileService_re.searchByID(user.getID());
         if (amazonFileModel==null){
             return "user profile not found";
         }
@@ -224,7 +227,7 @@ public class UserController {
         }
 
         String username = JWTUtil.getName(token);
-        User user = userService.selectByName(username);
+        User user = userService_re.selectByName(username);
         if (user==null) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return "user not found";
@@ -250,7 +253,7 @@ public class UserController {
     @GetMapping("/v1/user/verify/{username}/{verifyToken}")
     public String verifyUser(@PathVariable("username") String username,
                              @PathVariable("verifyToken") String verifyToken){
-        User user = userService.selectByName(username);
+        User user = userService_re.selectByName(username);
         if (user==null) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return "user not found";
@@ -287,12 +290,12 @@ public class UserController {
 
     @DeleteMapping(path = "/v1/user/{username}")
     public String deleteUser(@PathVariable("username") String username){
-        User user = userService.selectByName(username);
+        User user = userService_re.selectByName(username);
         if (user==null) return "user not found";
 
         String ID = user.getID();
         userService.deleteUser(ID);
-        if (fileService.searchByID(ID)!=null){
+        if (fileService_re.searchByID(ID)!=null){
             try{
                 amazonService.delete(ID);
                 fileService.deleteFile(ID);

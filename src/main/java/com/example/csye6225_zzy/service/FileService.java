@@ -17,11 +17,6 @@ public class FileService implements FileMapper {
     }
 
     @Override
-    public AmazonFileModel searchByID(String ID) {
-        return fileMapper.searchByID(ID);
-    }
-
-    @Override
     public void updateFile(AmazonFileModel file) {
         fileMapper.updateFile(file);
     }

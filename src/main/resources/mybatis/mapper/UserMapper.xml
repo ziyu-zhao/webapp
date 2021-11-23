@@ -5,10 +5,6 @@
 
 <mapper namespace="com.example.csye6225_zzy.mapper.UserMapper">
 
-    <select id="selectByName" resultType="user">
-        select * from user where username=#{name}
-    </select>
-
     <insert id="addUser" parameterType="user">
         insert into user (ID, firstname, lastname, password, username, account_created, account_updated , verified, verified_time)
         values (#{ID},#{firstname},#{lastname},#{password},#{username},#{accountCreated},#{accountUpdated},#{verified},#{verifiedTime})
