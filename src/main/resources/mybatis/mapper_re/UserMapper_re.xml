@@ -5,7 +5,7 @@
 
 <mapper namespace="com.example.csye6225_zzy.mapper_re.UserMapper_re">
 
-    <select id="selectByName" resultType="user">
+    <select id="selectByName" resultType="com.example.csye6225_zzy.pojo.User">
         select * from user where username=#{name}
     </select>
 

@@ -5,7 +5,7 @@
 
 <mapper namespace="com.example.csye6225_zzy.mapper_re.FileMapper_re">
 
-    <select id="searchByID" resultType="amazonFileModel">
+    <select id="searchByID" resultType="com.example.csye6225_zzy.pojo.AmazonFileModel">
         select * from amazon_file_model where id=#{ID}
     </select>
 
