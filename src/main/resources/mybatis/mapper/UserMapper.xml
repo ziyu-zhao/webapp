@@ -5,12 +5,12 @@
 
 <mapper namespace="com.example.csye6225_zzy.mapper.UserMapper">
 
-    <insert id="addUser" parameterType="user">
+    <insert id="addUser" parameterType="com.example.csye6225_zzy.pojo.User">
         insert into user (ID, firstname, lastname, password, username, account_created, account_updated , verified, verified_time)
         values (#{ID},#{firstname},#{lastname},#{password},#{username},#{accountCreated},#{accountUpdated},#{verified},#{verifiedTime})
     </insert>
 
-    <update id="updateUser" parameterType="user">
+    <update id="updateUser" parameterType="com.example.csye6225_zzy.pojo.User">
         update user set firstname=#{firstname},lastname=#{lastname},
                         password=#{password},username=#{username},
                         account_created=#{accountCreated},account_updated=#{accountUpdated},

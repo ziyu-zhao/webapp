@@ -9,12 +9,12 @@
         delete from amazon_file_model where id=#{ID}
     </delete>
 
-    <insert id="addFile" parameterType="amazonFileModel">
+    <insert id="addFile" parameterType="com.example.csye6225_zzy.pojo.AmazonFileModel">
         insert into amazon_file_model (ID, filename, url, upload_time)
         values (#{ID},#{filename},#{url},#{uploadTime})
     </insert>
 
-    <update id="updateFile" parameterType="amazonFileModel">
+    <update id="updateFile" parameterType="com.example.csye6225_zzy.pojo.AmazonFileModel">
         update amazon_file_model set filename=#{filename},
                         url=#{url},
                         upload_time=#{uploadTime}
