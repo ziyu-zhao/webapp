@@ -79,16 +79,16 @@ public class UserController {
             return "user not verified";
         }
 
-        System.out.println("verified"+user.getVerifiedTime());
+        System.out.println("verified"+user.getVerifiedtime());
 
         Map<String,String> RUser = new HashMap<>();
         RUser.put("ID",user.getID());
         RUser.put("firstname",user.getFirstname());
         RUser.put("lastname",user.getLastname());
         RUser.put("username",user.getUsername());
-        RUser.put("accountCreated",user.getAccountCreated());
-        RUser.put("accountUpdated",user.getAccountUpdated());
-        RUser.put("verifyTime",user.getVerifiedTime());
+        RUser.put("accountCreated",user.getAccountcreated());
+        RUser.put("accountUpdated",user.getAccountupdated());
+        RUser.put("verifyTime",user.getVerifiedtime());
 
         return JSON.toJSONString(RUser);
     }
@@ -124,7 +124,7 @@ public class UserController {
         user.setLastname(map.get("lastname"));
         user.setFirstname(map.get("firstname"));
         user.setPassword(bCryptPasswordEncoder.encode(map.get("password")));
-        user.setAccountUpdated(format.format(new Date()));
+        user.setAccountupdated(format.format(new Date()));
 
         userService.updateUser(user);
 
@@ -133,9 +133,9 @@ public class UserController {
         RUser.put("firstname",user.getFirstname());
         RUser.put("lastname",user.getLastname());
         RUser.put("username",user.getUsername());
-        RUser.put("accountCreated",user.getAccountCreated());
-        RUser.put("accountUpdated",user.getAccountUpdated());
-        RUser.put("verifyTime",user.getVerifiedTime());
+        RUser.put("accountCreated",user.getAccountcreated());
+        RUser.put("accountUpdated",user.getAccountupdated());
+        RUser.put("verifyTime",user.getVerifiedtime());
 
         return JSON.toJSONString(RUser);
     }
@@ -177,7 +177,7 @@ public class UserController {
             return "error, cannot upload to bucket";
         }
 
-        amazonFileModel.setUploadTime(format.format(new Date()));
+        amazonFileModel.setUploadtime(format.format(new Date()));
         if (fileService_re.searchByID(ID)!=null){
             fileService.updateFile(amazonFileModel);
         }else {
@@ -281,7 +281,7 @@ public class UserController {
         }
 
         user.setVerified("true");
-        user.setVerifiedTime(format.format(new Date()));
+        user.setVerifiedtime(format.format(new Date()));
 
         userService.updateUser(user);
 
@@ -290,9 +290,9 @@ public class UserController {
         RUser.put("firstname",user.getFirstname());
         RUser.put("lastname",user.getLastname());
         RUser.put("username",user.getUsername());
-        RUser.put("accountCreated",user.getAccountCreated());
-        RUser.put("accountUpdated",user.getAccountUpdated());
-        RUser.put("verifyTime",user.getVerifiedTime());
+        RUser.put("accountCreated",user.getAccountcreated());
+        RUser.put("accountUpdated",user.getAccountupdated());
+        RUser.put("verifyTime",user.getVerifiedtime());
 
         return JSON.toJSONString(RUser);
 

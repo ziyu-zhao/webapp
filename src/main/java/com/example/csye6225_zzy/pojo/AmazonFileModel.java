@@ -23,5 +23,5 @@ public class AmazonFileModel implements Serializable {
     @Id
     private String ID;
 
-    private String uploadTime;
+    private String uploadtime;
 }
