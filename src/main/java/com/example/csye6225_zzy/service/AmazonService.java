@@ -32,13 +32,12 @@ public class AmazonService {
     @Value("${custom.aws.bucket}")
     private String bucket;
 
-    private String SNSTopicArn = "arn:aws:sns:us-east-1:713361818012:mytopic";
+    @Value("${custom.aws.SNSTopic}")
+    private String SNSTopicArn;
 
     private AmazonS3 amazonS3;
 
     private AmazonSNS amazonSNS;
-
-    Map<String, MessageAttributeValue> smsAttributes;
 
     @PostConstruct
     public void init(){
@@ -100,23 +99,7 @@ public class AmazonService {
         amazonSNS.publish(new PublishRequest()
                 .withTopicArn(SNSTopicArn)
                 .withMessage(message)
-                //.withMessageAttributes(getSmsAttributes())
         );
     }
 
-    private Map<String, MessageAttributeValue> getSmsAttributes(){
-        if (smsAttributes==null){
-            Map<String, MessageAttributeValue> smsAttributes = new HashMap<>();
-            smsAttributes.put("AWS.SNS.SMS.SenderID", new MessageAttributeValue()
-                    .withStringValue("zzyweb") //The sender ID shown on the device.
-                    .withDataType("String"));
-            smsAttributes.put("AWS.SNS.SMS.MaxPrice", new MessageAttributeValue()
-                    .withStringValue("0.50") //Sets the max price to 0.50 USD.
-                    .withDataType("Number"));
-            smsAttributes.put("AWS.SNS.SMS.SMSType", new MessageAttributeValue()
-                    .withStringValue("Transactional") //Sets the type to promotional.
-                    .withDataType("String"));
-        }
-        return smsAttributes;
-    }
 }

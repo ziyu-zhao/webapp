@@ -78,7 +78,7 @@ public class IndexController {
 
             userService.addUser(user);
 
-            String verityToken = user.getID()+user.getFirstname();
+            String verityToken = user.getUsername() + "-" + user.getAccountCreated();
             dynamoDBService.createItems(user.getID(),verityToken);
 
             Map<String,String> message = new HashMap<>();
@@ -96,6 +96,7 @@ public class IndexController {
             RUser.put("username",user.getUsername());
             RUser.put("accountCreated",user.getAccountCreated());
             RUser.put("accountUpdated",user.getAccountUpdated());
+            RUser.put("verified",user.getVerified());
             return JSON.toJSONString(RUser);
         }catch (Exception e){
             e.printStackTrace();

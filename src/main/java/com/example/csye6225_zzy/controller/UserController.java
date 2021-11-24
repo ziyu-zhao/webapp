@@ -86,6 +86,7 @@ public class UserController {
         RUser.put("username",user.getUsername());
         RUser.put("accountCreated",user.getAccountCreated());
         RUser.put("accountUpdated",user.getAccountUpdated());
+        RUser.put("verifyTime",user.getVerifiedTime());
 
         return JSON.toJSONString(RUser);
     }
@@ -268,6 +269,11 @@ public class UserController {
         if (token.equals("expired")){
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return "verifyToken expired";
+        }
+
+        if (!token.equals(verifyToken)){
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            return "verifyToken does not match";
         }
 
         user.setVerified("true");
