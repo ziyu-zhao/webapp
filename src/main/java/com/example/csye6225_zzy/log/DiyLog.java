@@ -27,6 +27,7 @@ public class DiyLog {
         long executeTime1 = System.currentTimeMillis();
         Object result = joinPoint.proceed();
         long executeTime2 = System.currentTimeMillis();
+        logger.info((String) result);
         statsDClient.recordExecutionTime(sign,(executeTime2-executeTime1));
         return result + " \nlocal address: "+EC2MetadataUtils.getPrivateIpAddress();
     }
