@@ -54,7 +54,7 @@ public class UserController {
     @Autowired
     private FileService_re fileService_re;
 
-    private SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+    private SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy-HH:mm:ss");
 
 
     @ApiOperation("get user information")

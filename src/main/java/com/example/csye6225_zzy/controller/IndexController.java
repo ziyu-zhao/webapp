@@ -46,7 +46,7 @@ public class IndexController {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    private SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+    private SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy-HH:mm:ss");
 
     @ApiOperation("create new user")
     @PostMapping(path = "/v1/user", consumes = "application/json")
