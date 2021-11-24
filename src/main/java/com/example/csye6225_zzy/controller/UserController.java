@@ -79,6 +79,8 @@ public class UserController {
             return "user not verified";
         }
 
+        System.out.println("verified"+user.getVerifiedTime());
+
         Map<String,String> RUser = new HashMap<>();
         RUser.put("ID",user.getID());
         RUser.put("firstname",user.getFirstname());
@@ -254,6 +256,8 @@ public class UserController {
     @GetMapping("/v1/user/verify/{username}/{verifyToken}")
     public String verifyUser(@PathVariable("username") String username,
                              @PathVariable("verifyToken") String verifyToken){
+        System.out.println(username);
+        System.out.println(verifyToken);
         User user = userService_re.selectByName(username);
         if (user==null) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
