@@ -63,13 +63,13 @@ public class DynamoDBService {
 
         }
 
-        TableDescription tableDescription = table.describe();
-        System.out.format(
-                "Name: %s:\n" + "Status: %s \n" + "Provisioned Throughput (read capacity units/sec): %d \n"
-                        + "Provisioned Throughput (write capacity units/sec): %d \n",
-                tableDescription.getTableName(), tableDescription.getTableStatus(),
-                tableDescription.getProvisionedThroughput().getReadCapacityUnits(),
-                tableDescription.getProvisionedThroughput().getWriteCapacityUnits());
+//        TableDescription tableDescription = table.describe();
+//        System.out.format(
+//                "Name: %s:\n" + "Status: %s \n" + "Provisioned Throughput (read capacity units/sec): %d \n"
+//                        + "Provisioned Throughput (write capacity units/sec): %d \n",
+//                tableDescription.getTableName(), tableDescription.getTableStatus(),
+//                tableDescription.getProvisionedThroughput().getReadCapacityUnits(),
+//                tableDescription.getProvisionedThroughput().getWriteCapacityUnits());
     }
 
     public void createItems(String ID, String token){
