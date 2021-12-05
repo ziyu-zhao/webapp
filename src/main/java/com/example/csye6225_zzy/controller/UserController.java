@@ -292,7 +292,6 @@ public class UserController {
         RUser.put("verifyTime",user.getVerifiedtime());
 
         return JSON.toJSONString(RUser);
-
     }
 
     @DeleteMapping(path = "/v1/user/{username}")
