@@ -20,3 +20,8 @@ Example data for testing API of creating user:
   "lastname": "zhao"
 }
 ```
+
+Import certificate to aws
+```shell
+aws acm import-certificate --certificate fileb://certificate.crt --private-key fileb://private.key --certificate-chain fileb://certificate-chain.ca-bundle
+```
