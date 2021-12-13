@@ -8,7 +8,6 @@ Ziyu Zhao 001306157
 #### java 8
 
 
-
 ### Test
 
 Example data for testing API of creating user:
